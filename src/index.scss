@@ -1,0 +1,50 @@
+@import './components/Styles/resets';
+@import './components/Styles/variables';
+@import './components//Styles/mixins';
+
+
+body{
+background-color: $White-bg;
+color: $text-color;
+}
+
+.body-main{
+  width: 85%;
+  margin-inline: auto;
+  .search-form{
+    @include flex-style;
+    width: 100%;
+    height: 2.5rem;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: $border-radii;
+    padding: 0 1rem;
+    input{
+      width: 90%;
+      font-size: 1.2rem;
+      height: 100%;
+    }
+    #search{
+      color: $Tertiary-color;
+    }
+  }
+  header{
+    @include flex-style;
+    padding: 2rem 0;
+    .phonetics{
+      .accent{
+        padding: 0.5rem 0;
+        color: $Tertiary-color;
+      }
+    }
+    .audio{
+      width: 3rem;
+      height: 3rem;
+      padding: 1rem;
+      border-radius: 50%;
+      background-color: $Soft-Tertiary-color;
+      .play-btn{
+        color: $Tertiary-color;
+      }
+    }
+  }
+}

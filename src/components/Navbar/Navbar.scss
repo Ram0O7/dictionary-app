@@ -1,0 +1,31 @@
+@import '../Styles/_variables';
+@import '../Styles/mixins';
+
+.navbar{
+    @include flex-style;
+    width: $Start-width;
+    padding: 2rem 0;
+    .book-icon{
+        color: $Tertiary-color;
+        font-size: 2rem;
+    }
+    .style-togglers{
+        @include flex-style;
+        gap: 0.5rem;
+        #font-select{
+            color: $text-color;
+        }
+        .switch{
+            width: 2rem;
+            height: 1rem;
+            background-color: #606060;
+            border-radius: 8px;
+            .toggle-btn{
+                width: 1rem;
+                height: 100%;
+                border-radius: $border-radii;
+                background-color: $Tertiary-color;
+            }
+        }
+    }
+}
