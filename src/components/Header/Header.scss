@@ -1,0 +1,23 @@
+@import '../Styles/variables';
+@import '../Styles/mixins';
+
+header{
+    @include flex-style;
+    padding: 2rem 0;
+    .phonetics{
+      .accent{
+        padding: 0.5rem 0;
+        color: $Tertiary-color;
+      }
+    }
+    .audio{
+      width: 3rem;
+      height: 3rem;
+      padding: 1rem;
+      border-radius: 50%;
+      background-color: $Soft-Tertiary-color;
+      .play-btn{
+        color: $Tertiary-color;
+      }
+    }
+  }

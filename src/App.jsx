@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { FaSearch } from "react-icons/fa";
-import { FaPlay } from "react-icons/fa";
-import { FaPause } from "react-icons/fa";
+import Header from "./components/Header/Header";
 import Meaning from "./components/Meanig/Meaning";
 import Navbar from "./components/Navbar/Navbar";
 
@@ -9,8 +8,9 @@ function App() {
   const inputRef = useRef('');
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
-  const [currentSearch, setCurrentSearch] = useState('hello');
+  const [currentSearch, setCurrentSearch] = useState('search');
   const [searchVal, setSearchVal] = useState('');
+  const [meanings, setMeanings] = useState([]);
   const [phonetics, setPhonetics] = useState({
     text: '',
     accent: '',
@@ -39,11 +39,11 @@ function App() {
     const response = await fetch(url);
     try {
       const meaning = await response.json();
-      console.log(meaning);
       if (!response.ok) {
-        setLoading(false);
-        throw new Error('sorry pal! we couldn\'t find definitions for the word you were looking for. ');
+        console.log(meaning)
+        throw new Error(meaning.title +", "+ meaning.resolution);
       }
+      setMeanings(meaning[0].meanings);
       setErrorMessage('');
       setLoading(false);
       setPhonetics({
@@ -61,18 +61,19 @@ function App() {
         }
       });
     } catch (error) {
+      setLoading(false);
       setErrorMessage(error.message);
     }
   }
 
   useEffect(() => {
-    fetchMeaning();
+    fetchMeaning(); // eslint-disable-next-line
   }, [currentSearch]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    setTimeout(() => {
       setErrorMessage('');
-    }, 3000);
+    }, 5000);
   }, [errorMessage]);
 
   useEffect(() => {
@@ -80,31 +81,24 @@ function App() {
     wordAudio.addEventListener('ended', () => {
       setIsPaused(!isPaused);
     })
-  }, [handlePlayEvent]);
+    // eslint-disable-next-line
+  }, [isPaused]);
 
   return (
     <main className="body-main">
       <audio src={phonetics.audio} type='audio/mpeg' id="word-audio" />
       <Navbar />
       <form action="submit" className="search-form" onSubmit={submitHandler}>
-        <input ref={inputRef} type="text" placeholder="hello" onChange={(e) => setSearchVal(e.target.value)} />
+        <input ref={inputRef} type="text" placeholder="search" onChange={(e) => setSearchVal(e.target.value)} />
         <button type="submit"><FaSearch id="search" /></button>
       </form>
-      {loading ?
-        <h2 style={{ textAlign: 'center', padding: '4rem 0' }}>Loading...</h2>
-        :
-        !errorMessage && <header>
-          <div className="phonetics">
-            <h1 className="word">{phonetics.text}</h1>
-            <p className="accent">{phonetics.accent}</p>
-          </div>
-          <div className="audio" onClick={handlePlayEvent}>
-            {isPaused ? <FaPause className="play-btn" /> : <FaPlay className="play-btn" />}
-          </div>
-        </header>
-      }
-      {errorMessage && <p style={{ textAlign: 'center', marginTop:'5rem', lineHeight: '1.5rem', color: '#f00' }}>{errorMessage}</p>}
-      <Meaning />
+      <Header loading={loading}
+        errorMessage={errorMessage}
+        phonetics={phonetics}
+        clickEvent={handlePlayEvent}
+        isPaused={isPaused}
+      />
+      {!loading && <Meaning meanings={meanings} />}
     </main>
   );
 }
