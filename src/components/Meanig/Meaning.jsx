@@ -1,8 +1,12 @@
 import React from 'react';
 import './Meaning.scss';
 
-const Meaning = ({ meanings }) => {
+const Meaning = ({ meanings, getValue }) => {
     
+    const searchCurrentValue = (e) => {
+        getValue(e.target.innerText);
+}
+
     return (
         <section className='section-main'>
             {meanings.map((meaning, index) => {
@@ -23,7 +27,7 @@ const Meaning = ({ meanings }) => {
                             <span className='type-header'>Synonyms </span>
                             <div className='btn-container'>
                                 {synonyms.map((synonym,index) => {
-                                    return (<button key={index} className='more-btn'>{synonym}, </button>)
+                                    return (<button type='button' key={index} className='more-btn'><span onClick={searchCurrentValue}>{synonym}</span>, </button>)
                                 })}
                             </div>
                         </div>}
@@ -32,7 +36,7 @@ const Meaning = ({ meanings }) => {
                             <span className='type-header'>Antonyms </span>
                             <div className='btn-container'>
                                 {antonyms.map((antonym,index) => {
-                                    return (<button key={index} className='more-btn'>{antonym}, </button>)
+                                    return (<button type='button' key={index} className='more-btn'><span onClick={searchCurrentValue}>{antonym}</span>, </button>)
                                 })}
                             </div>
                         </div>}

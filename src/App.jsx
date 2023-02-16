@@ -4,8 +4,17 @@ import Header from "./components/Header/Header";
 import Meaning from "./components/Meanig/Meaning";
 import Navbar from "./components/Navbar/Navbar";
 
+const getStorageTheme = () => {
+  let theme = 'light-theme';
+  if (localStorage.getItem('theme')) {
+    theme = localStorage.getItem('theme');
+  }
+  return theme;
+};
+
 function App() {
   const inputRef = useRef('');
+  const [theme, setTheme] = useState(getStorageTheme());
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
   const [currentSearch, setCurrentSearch] = useState('search');
@@ -17,6 +26,14 @@ function App() {
     audio: ''
   });
   const [isPaused, setIsPaused] = useState(false);
+
+  const toggleTheme = () => {
+    if (theme === 'light-theme') {
+      setTheme('dark-theme');
+    } else {
+      setTheme('light-theme');
+    }
+}
 
   const handlePlayEvent = () => {
     const wordAudio = document.getElementById('word-audio');
@@ -32,6 +49,12 @@ function App() {
     setLoading(true);
     setCurrentSearch(searchVal.toLowerCase());
     inputRef.current.value = '';
+  }
+
+  const handleRecievedVal = (value) => {
+    if (value) {
+      setCurrentSearch(value);
+    }
   }
 
   const fetchMeaning = async () => {
@@ -84,10 +107,15 @@ function App() {
     // eslint-disable-next-line
   }, [isPaused]);
 
+  useEffect(() => {
+    document.documentElement.className = theme;
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
   return (
     <main className="body-main">
       <audio src={phonetics.audio} type='audio/mpeg' id="word-audio" />
-      <Navbar />
+      <Navbar onClick={toggleTheme} />
       <form action="submit" className="search-form" onSubmit={submitHandler}>
         <input ref={inputRef} type="text" placeholder="search" onChange={(e) => setSearchVal(e.target.value)} />
         <button type="submit"><FaSearch id="search" /></button>
@@ -98,7 +126,7 @@ function App() {
         clickEvent={handlePlayEvent}
         isPaused={isPaused}
       />
-      {!loading && <Meaning meanings={meanings} />}
+      {!loading && !errorMessage && <Meaning meanings={meanings} getValue={handleRecievedVal} />}
     </main>
   );
 }

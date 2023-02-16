@@ -4,9 +4,21 @@
 
 
 body {
-  background-color: $White-bg;
+  background-color: $Body-bg;
   color: $text-color;
 }
+
+// .light-theme{
+//   $Body-bg: #fff;
+//   $text-color: #000;
+//   $Grayish: rgba(0,0,0,0.2);
+// }
+
+// .dark-theme{
+//   $Body-bg: #000;
+//   $text-color: #fff;
+//   $Grayish: rgba(255, 255, 255, 0.2);
+// }
 
 .body-main {
   width: 85%;
@@ -22,6 +34,7 @@ body {
 
     input {
       width: 90%;
+      color: $text-color;
       font-size: 1.2rem;
       height: 100%;
     }

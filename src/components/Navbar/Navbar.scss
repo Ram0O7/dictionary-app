@@ -27,6 +27,10 @@
                 border-radius: $border-radii;
                 background-color: $Tertiary-color;
             }
+            .active{
+                transform: translateX(1rem);
+                background-color: $Complementary-color;
+            }
         }
     }
 }
