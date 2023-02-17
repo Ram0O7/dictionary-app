@@ -15,6 +15,7 @@
         #font-select{
             color: var(--text-color);
             border-right: 0.1rem solid var(--Grayish);
+            font-family: inherit;
             option{
                 color: #1f1f1f;
             }
