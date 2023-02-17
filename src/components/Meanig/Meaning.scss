@@ -8,34 +8,36 @@
         .part-of-speech {
             display: flex;
             align-items: center;
-            font-weight: bolder;
 
             hr {
                 width: 100%;
                 border: none;
-                border-bottom: 1px solid $Grayish;
+                border-bottom: 1px solid var(--Grayish);
                 padding-top: 0.15rem;
-                color: $Grayish;
+                color: var(--Grayish);
             }
         }
 
         .type-header {
             padding: 0.75rem 0;
-            color: $Grayish;
+            color: var(--Grayish);
+            font-weight: 500;
         }
 
         .definitions {
             padding-left: 1.5rem;
             margin-bottom: 1rem;
             list-style: none;
+            font-weight: 500;
 
-            .definition::before {  
-                content: "\2022";                  
-                color: $Tertiary-color;                  
+            .definition::before {
+                content: "\2022";
+                color: $Soft-Secondary-color;
                 display: inline-block;
                 width: 1rem;
                 margin-left: -1.2em;
             }
+
             .definition {
                 padding: 0.5rem;
             }
@@ -46,19 +48,22 @@
             display: flex;
             gap: 0.5rem;
             margin: 0.5rem 0rem;
-            .type-header{
+
+            .type-header {
                 padding: 0.25rem 0;
             }
-           .btn-container {
-               @include flex-style;
-               flex-wrap: wrap;
-               justify-content: flex-start;
+
+            .btn-container {
+                @include flex-style;
+                flex-wrap: wrap;
+                justify-content: flex-start;
 
                 .more-btn {
                     padding: 0.25rem 0;
                     font-size: 1rem;
                     margin-inline: 0.25rem;
-                    color: $Tertiary-color;
+                    color: $Soft-Secondary-color;
+                    font-weight: 500;
                 }
             }
         }

@@ -5,10 +5,13 @@
     padding: 0;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
-    font-family: serif;
+    transition: background-color 0.5s ease-in-out;
 }
 
-select, button, option, input{
+select,
+button,
+option,
+input {
     outline: none;
     border: none;
     background: none;

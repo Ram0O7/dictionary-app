@@ -11,13 +11,28 @@ const getStorageTheme = () => {
   }
   return theme;
 };
+const getStorageFont = () => {
+  let font = 'display';
+  if (localStorage.getItem('font')) {
+    font = localStorage.getItem('font');
+  }
+  return font;
+}
+const getStorageSearch = () => {
+  let search = 'welcome';
+  if (localStorage.getItem('search')) {
+    search = localStorage.getItem('search');
+  }
+  return search;
+}
 
 function App() {
   const inputRef = useRef('');
   const [theme, setTheme] = useState(getStorageTheme());
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
-  const [currentSearch, setCurrentSearch] = useState('search');
+  const [audioError, setAudioError] = useState(false);
+  const [currentSearch, setCurrentSearch] = useState(getStorageSearch());
   const [searchVal, setSearchVal] = useState('');
   const [meanings, setMeanings] = useState([]);
   const [phonetics, setPhonetics] = useState({
@@ -26,6 +41,7 @@ function App() {
     audio: ''
   });
   const [isPaused, setIsPaused] = useState(false);
+  const [font, setFont] = useState(getStorageFont());
 
   const toggleTheme = () => {
     if (theme === 'light-theme') {
@@ -41,20 +57,27 @@ function App() {
     if (src !== '') {
       setIsPaused(!isPaused);
       wordAudio.play();
+    } else {
+      setAudioError(true);
     }
   }
 
   const submitHandler = (e) => {
     e.preventDefault();
-    setLoading(true);
     setCurrentSearch(searchVal.toLowerCase());
     inputRef.current.value = '';
+    setAudioError(false);
   }
 
   const handleRecievedVal = (value) => {
     if (value) {
       setCurrentSearch(value);
+      setAudioError(false);
     }
+  }
+
+  const handleRecievedFont = (font) => {
+    setFont(font);
   }
 
   const fetchMeaning = async () => {
@@ -63,8 +86,7 @@ function App() {
     try {
       const meaning = await response.json();
       if (!response.ok) {
-        console.log(meaning)
-        throw new Error(meaning.title +", "+ meaning.resolution);
+        throw new Error(meaning.title +` for the word , "${currentSearch}". `+ meaning.resolution);
       }
       setMeanings(meaning[0].meanings);
       setErrorMessage('');
@@ -90,6 +112,7 @@ function App() {
   }
 
   useEffect(() => {
+    setLoading(true);
     fetchMeaning(); // eslint-disable-next-line
   }, [currentSearch]);
 
@@ -110,12 +133,17 @@ function App() {
   useEffect(() => {
     document.documentElement.className = theme;
     localStorage.setItem('theme', theme);
-  }, [theme]);
+    localStorage.setItem('font', font);
+  }, [theme, font]);
+
+  useEffect(() => {
+    localStorage.setItem('search', currentSearch);
+  }, [currentSearch]);
 
   return (
-    <main className="body-main">
+    <main className="body-main" style={{fontFamily: font}}>
       <audio src={phonetics.audio} type='audio/mpeg' id="word-audio" />
-      <Navbar onClick={toggleTheme} />
+      <Navbar onClick={toggleTheme} getCurrentFont={handleRecievedFont} currentFont={font} />
       <form action="submit" className="search-form" onSubmit={submitHandler}>
         <input ref={inputRef} type="text" placeholder="search" onChange={(e) => setSearchVal(e.target.value)} />
         <button type="submit"><FaSearch id="search" /></button>
@@ -125,6 +153,8 @@ function App() {
         phonetics={phonetics}
         clickEvent={handlePlayEvent}
         isPaused={isPaused}
+        search={currentSearch}
+        playError={audioError}
       />
       {!loading && !errorMessage && <Meaning meanings={meanings} getValue={handleRecievedVal} />}
     </main>

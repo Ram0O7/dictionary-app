@@ -7,7 +7,7 @@ header{
     .phonetics{
       .accent{
         padding: 0.5rem 0;
-        color: $Tertiary-color;
+        color: $Soft-Secondary-color;
       }
     }
     .audio{
@@ -16,8 +16,16 @@ header{
       padding: 1rem;
       border-radius: 50%;
       background-color: $Soft-Tertiary-color;
+      position: relative;
+      .audio-error{
+        position: absolute;
+        top: -1.2rem;
+        left: -0.75rem;
+        color: #f55;
+        font-size: 0.75rem;
+      }
       .play-btn{
-        color: $Tertiary-color;
+        color: $Soft-Primary-color;
       }
     }
   }
