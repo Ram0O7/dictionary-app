@@ -39,6 +39,44 @@ The Dictionary App is a web application built using React and the Dictionary API
     ```
 5. Open your browser and navigate to `http://localhost:3000`.
 
+### API requests and production
+
+Development and production use the same HTTPS endpoint at
+`https://freedictionaryapi.com/api/v1/entries/en/<word>`. This service supports
+browser CORS, so GitHub Pages requires no backend, proxy, API key, or environment
+variable. The old CRA-only proxy has been removed; restart `npm start` after updating.
+
+The client converts the provider's entries/senses into the UI's definition format,
+including examples, synonyms, and IPA pronunciation. Listen uses browser speech
+synthesis when the provider has no audio recording. Data comes from Wiktionary
+under CC BY-SA 4.0; provider, source, and license links are displayed in the app.
+
+Failed, rate-limited, malformed, timed-out, or missing results are retried against
+`https://api.dictionaryapi.dev/api/v2/entries/en/<word>`. Each provider has a
+six-second timeout. New searches cancel the previous request. Both providers are
+external services: if both are unavailable, the app shows a retryable error.
+FreeDictionaryAPI.com currently documents a limit of 1,000 requests/hour/IP.
+
+An optional build-time `REACT_APP_DICTIONARY_API_BASE` overrides the primary
+endpoint. It must return either supported provider format and allow your browser
+origin; a relative endpoint requires a real server route and will not work on
+GitHub Pages. Do not set it to the previous development proxy path.
+
+Validate and publish the updated production bundle:
+
+```sh
+npm test -- --watchAll=false
+npm run build
+npm run deploy
+```
+
+`npm run deploy` rebuilds and publishes `build/` to the configured GitHub Pages
+repository. Source changes do not update an already published site until deployed.
+After publishing, search for a word other than the built-in daily word and check
+that its definitions appear. The daily word alone does not test the API.
+
+Provider documentation: https://freedictionaryapi.com/
+
 ## Usage
 
 1. Open the app in your browser.

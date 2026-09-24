@@ -1,6 +1,6 @@
 {
-  "short_name": "Dictionary App",
-  "name": "A Beautiful Alternative For Dictionary Stuff",
+  "short_name": "Lexicon",
+  "name": "Lexicon — For the endlessly curious",
   "icons": [
     {
       "src": "vocab.png",
@@ -10,6 +10,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#2e503d",
+  "background_color": "#f8f9f5"
 }
